@@ -20,6 +20,9 @@
         },
         {
             "m_Id": "0e56ce73150e45c896fe23c5cc00e5d0"
+        },
+        {
+            "m_Id": "80dcbf4b23de4350afa2b3928e502eff"
         }
     ],
     "m_Keywords": [],
@@ -1622,6 +1625,35 @@
 }
 
 {
+    "m_SGVersion": 3,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.ColorShaderProperty",
+    "m_ObjectId": "80dcbf4b23de4350afa2b3928e502eff",
+    "m_Guid": {
+        "m_GuidSerialized": "53fa9f4d-3bfc-4fec-93d1-8b9247eeec20"
+    },
+    "m_Name": "SecondColor",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "SecondColor",
+    "m_DefaultReferenceName": "_SecondColor",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 0.0
+    },
+    "isMainColor": false,
+    "m_ColorMode": 0
+}
+
+{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
     "m_ObjectId": "8a337763de0b4fcd99fb988ab9071126",
@@ -2155,6 +2187,9 @@
         },
         {
             "m_Id": "0e56ce73150e45c896fe23c5cc00e5d0"
+        },
+        {
+            "m_Id": "80dcbf4b23de4350afa2b3928e502eff"
         }
     ]
 }
