@@ -6,7 +6,7 @@
             "id": "4310226b-f3be-4746-9bcc-003be604316b",
             "actions": [
                 {
-                    "name": "Mouse",
+                    "name": "MouseDelta",
                     "type": "Value",
                     "id": "6e09f24f-b51b-4235-a905-cf7d9b9e64b0",
                     "expectedControlType": "Vector2",
@@ -41,7 +41,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Mouse",
+                    "action": "MouseDelta",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

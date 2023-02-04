@@ -2,55 +2,60 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XInput;
 
 public class PlayerController : MonoBehaviour
 {
-    private InputActions _inputController;
+
+    public float SecondsTillAttached = 1f;
+    public float SecondsTillStuck = 3f;
     public GameObject Player;
 
-    public Vector2 mouseDelta;
-    public float Swipe;
+    private Vector2 currentMousePos;
+    private Vector2 currentMouseDelta;
 
-    private Rigidbody Rigidbody;
+    private Vector2 mouseStartedClick; // For swipe direction
+    private Vector2 mouseFinishedClick;
 
-    private bool rootedIn = true;
-    private bool falling = false;
-    private bool LeftClicked = false;
-    private float oldMag = -1;
+    private Vector2 mouseDelta; // For swipe magnitute
 
-    private Vector2 clickedPosition;
-
-    private void Awake()
+    // Process Player Input Click
+    public void OnMainInput(InputAction.CallbackContext context)
     {
-        _inputController = new InputActions();
-        _inputController.Enable();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        Rigidbody = Player.GetComponent<Rigidbody>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        mouseDelta = _inputController.Player.Mouse.ReadValue<Vector2>();
-
-    }
-
-    public void OnMouseInteract(InputAction.CallbackContext context)
-    {
+        // Input Just Held (Left Mouse Button Held)
         if (context.started)
         {
+            // Get Mouse Started Click Position
+            mouseStartedClick = currentMousePos;
         }
 
+        // Input Just stopped (Left Mouse Button Released)
         if (context.canceled)
         {
-            Debug.Log(mouseDelta);
-            Vector3 Force = new Vector3(mouseDelta.x, mouseDelta.y, 0);
-            Rigidbody.AddForceAtPosition(Force, Player.transform.position);
+            // Get Mouse Released Position
+            mouseFinishedClick = currentMousePos;
+
+            // Throw Player
+            ThrowPlayer();
         }
+    }
+    // Update Mouse Positiion
+    public void UpdateMousePos(InputAction.CallbackContext context)
+    {
+        currentMousePos = context.ReadValue<Vector2>();
+    }
+
+    // Update Mouse Move Delta
+    public void UpdateMoveDelta(InputAction.CallbackContext context)
+    {
+        currentMouseDelta = context.ReadValue<Vector2>();  
+    }
+
+    // Throw player
+    private void ThrowPlayer()
+    {
+        Vector3 direction = (mouseFinishedClick - mouseStartedClick).normalized;
+        float magnitude = currentMouseDelta.magnitude;
+
+        Player.GetComponent<Rigidbody>().AddForceAtPosition(direction*magnitude, Player.transform.position);
     }
 }
