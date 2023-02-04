@@ -2,12 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.ProBuilder.Shapes;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Tuning Variables")]
 
+    public float maxSpeed = 20;
+    public float maxStrength = 5;
+    public float strengthMultiplier = 1;
+
+    [Header("Root System")]
     public float SecondsTillAttached = 1f;
     public float SecondsTillStuck = 3f;
+
+    [Header("Dependencies")]
     public GameObject Player;
 
     private Vector2 currentMousePos;
@@ -33,6 +42,7 @@ public class PlayerController : MonoBehaviour
         {
             // Get Mouse Released Position
             mouseFinishedClick = currentMousePos;
+            mouseDelta = currentMouseDelta;
 
             // Throw Player
             ThrowPlayer();
@@ -53,9 +63,25 @@ public class PlayerController : MonoBehaviour
     // Throw player
     private void ThrowPlayer()
     {
-        Vector3 direction = (mouseFinishedClick - mouseStartedClick).normalized;
-        float magnitude = currentMouseDelta.magnitude;
+        // Get Player Rigidbody
+        Rigidbody RB = Player.GetComponent<Rigidbody>();
 
-        Player.GetComponent<Rigidbody>().AddForceAtPosition(direction*magnitude, Player.transform.position);
+        Vector3 direction = (mouseFinishedClick - mouseStartedClick).normalized;
+        float magnitude = mouseDelta.magnitude * strengthMultiplier;
+
+        // Cap magnitude of Movement at Max Strength
+        magnitude = Mathf.Clamp(magnitude, 0, maxStrength);
+
+        // Move player in direction at magnitude
+        RB.AddForceAtPosition(direction*magnitude, Player.transform.position, ForceMode.Impulse);
+
+        // Rotate player
+        Vector3 torque = direction * magnitude * 0.5f;
+        Vector3 torqueY = Vector3.Project(torque, Vector3.forward);
+        RB.AddTorque(torqueY, ForceMode.Impulse);
+
+        // Clamp player speed
+        RB.velocity = Vector3.ClampMagnitude(RB.velocity, maxSpeed);
+        Debug.Log("str: " + magnitude + " direction: " + direction);
     }
 }
