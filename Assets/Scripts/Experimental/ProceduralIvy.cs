@@ -32,6 +32,7 @@ public class ProceduralIvy : MonoBehaviour {
             combineAndClear();
         }
 
+        /*
         if (Input.GetMouseButtonDown(0)) {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -39,6 +40,7 @@ public class ProceduralIvy : MonoBehaviour {
                 createIvy(hit);
             }
         }
+        */
     }
 
     Vector3 findTangentFromArbitraryNormal(Vector3 normal) {
