@@ -2,97 +2,86 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XInput;
+using UnityEngine.ProBuilder.Shapes;
 
 public class PlayerController : MonoBehaviour
 {
-    private InputActions _inputController;
-    public GameObject Player;
-
-    public Vector2 mouseDelta;
-    public Vector2 mousePosition;
-    public float Swipe;
-
-    private Rigidbody Rigidbody;
-
-    private bool rootedIn = true;
-    private bool falling = false;
-    private bool LeftClicked = false;
-    private float oldMag = -1;
-
-    private Vector2 clickedPosition;
-
-    private Vector2 startingPos;
-    private Vector2 endingPos;
-
     [Header("Tuning Variables")]
-    
+
     public float maxSpeed = 20;
     public float maxStrength = 5;
     public float strengthMultiplier = 1;
 
-    private void Awake()
+    [Header("Root System")]
+    public float SecondsTillAttached = 1f;
+    public float SecondsTillStuck = 3f;
+
+    [Header("Dependencies")]
+    public GameObject Player;
+
+    private Vector2 currentMousePos;
+    private Vector2 currentMouseDelta;
+
+    private Vector2 mouseStartedClick; // For swipe direction
+    private Vector2 mouseFinishedClick;
+
+    private Vector2 mouseDelta; // For swipe magnitute
+
+    // Process Player Input Click
+    public void OnMainInput(InputAction.CallbackContext context)
     {
-        _inputController = new InputActions();
-        _inputController.Enable();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        Rigidbody = Player.GetComponent<Rigidbody>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        mouseDelta = _inputController.Player.Mouse.ReadValue<Vector2>();
-
-    }
-
-    public void OnMouseDelta(InputAction.CallbackContext context)
-    {
-        mouseDelta = context.ReadValue<Vector2>();
-
-        
-    }
-
-    public void OnMousePosition(InputAction.CallbackContext context)
-    {
-        mousePosition = context.ReadValue<Vector2>();
-    }
-
-    public void OnMouseClick(InputAction.CallbackContext context)
-    {
+        // Input Just Held (Left Mouse Button Held)
         if (context.started)
         {
-            startingPos = mousePosition;
-
+            // Get Mouse Started Click Position
+            mouseStartedClick = currentMousePos;
         }
 
+        // Input Just stopped (Left Mouse Button Released)
         if (context.canceled)
         {
-            endingPos = mousePosition;
+            // Get Mouse Released Position
+            mouseFinishedClick = currentMousePos;
+            mouseDelta = currentMouseDelta;
 
-            float strength = mouseDelta.magnitude * strengthMultiplier;
-
-            strength = Mathf.Clamp(strength, 0, maxStrength);
-
-            Vector3 direction = (endingPos - startingPos).normalized;
-
-            Vector3 Force = direction * strength;
-
-            Vector3 torque = Force * 0.5f;
-
-            Rigidbody.AddForceAtPosition(Force, Player.transform.position, ForceMode.Impulse);
-            //Rigidbody.AddTorque(Force, ForceMode.Impulse);
-
-            Vector3 torqueY = Vector3.Project(torque, Vector3.forward);
-            Rigidbody.AddTorque(torqueY, ForceMode.Impulse);
-
-            Rigidbody.velocity = Vector3.ClampMagnitude(Rigidbody.velocity, maxSpeed);
-            Debug.Log("str: " + strength + " direction: " + direction);
-
+            // Throw Player
+            ThrowPlayer();
         }
+    }
+    // Update Mouse Positiion
+    public void UpdateMousePos(InputAction.CallbackContext context)
+    {
+        currentMousePos = context.ReadValue<Vector2>();
+    }
+
+    // Update Mouse Move Delta
+    public void UpdateMoveDelta(InputAction.CallbackContext context)
+    {
+        currentMouseDelta = context.ReadValue<Vector2>();  
+    }
+
+    // Throw player
+    private void ThrowPlayer()
+    {
+        // Get Player Rigidbody
+        Rigidbody RB = Player.GetComponent<Rigidbody>();
+
+        Vector3 direction = (mouseFinishedClick - mouseStartedClick).normalized;
+        float magnitude = mouseDelta.magnitude * strengthMultiplier;
+
+        // Cap magnitude of Movement at Max Strength
+        magnitude = Mathf.Clamp(magnitude, 0, maxStrength);
+
+        // Move player in direction at magnitude
+        RB.AddForceAtPosition(direction*magnitude, Player.transform.position, ForceMode.Impulse);
+
+        // Rotate player
+        Vector3 torque = direction * magnitude * 0.5f;
+        Vector3 torqueY = Vector3.Project(torque, Vector3.forward);
+        RB.AddTorque(torqueY, ForceMode.Impulse);
+
+        // Clamp player speed
+        RB.velocity = Vector3.ClampMagnitude(RB.velocity, maxSpeed);
+        Debug.Log("str: " + magnitude + " direction: " + direction);
     }
 }
