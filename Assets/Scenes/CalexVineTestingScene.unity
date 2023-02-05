@@ -292,7 +292,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 417157332}
   m_LocalRotation: {x: -1e-45, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1636, y: 3.1, z: 1193}
+  m_LocalPosition: {x: 1576.98, y: 3.1, z: 1198.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -988,7 +988,7 @@ GameObject:
   - component: {fileID: 1159493008}
   - component: {fileID: 1159493010}
   - component: {fileID: 1159493009}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Mountain
   m_TagString: Climbable
   m_Icon: {fileID: 0}
@@ -1759,7 +1759,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1722069654}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1636, y: 3.1, z: 1203}
+  m_LocalPosition: {x: 1576.98, y: 3.1, z: 1208.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2042,7 +2042,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2005670767}
   m_LocalRotation: {x: -1e-45, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1636, y: 3.1, z: 1193}
+  m_LocalPosition: {x: 1576.98, y: 3.1, z: 1198.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2213,6 +2213,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0b3d0b138185634f9433f7fff3b7d0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 128
   maxSpeed: 20
   maxStrength: 8
   strengthMultiplier: 0.5
