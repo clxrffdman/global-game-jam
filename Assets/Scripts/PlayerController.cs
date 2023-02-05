@@ -15,6 +15,7 @@ public class PlayerController : UnitySingleton<PlayerController>
     public float strengthMultiplier = 1;
     public float torqueStrength = 1;
     public float camForwardScalar = 0;
+    public int ThrowCount = 2;
 
     [Header("Root System")]
     public float SecondsTillAttached = 1f;
@@ -33,6 +34,7 @@ public class PlayerController : UnitySingleton<PlayerController>
     private Vector2 mouseDelta; // For swipe magnitute
 
     private bool ClimbingWall = false;
+    private int CurrentThrowCount = 0;
 
     [Header("Current State")]
 
@@ -53,9 +55,6 @@ public class PlayerController : UnitySingleton<PlayerController>
 
         }
     }
-
-
-
 
     // Process Player Input Click
     public void OnMainInput(InputAction.CallbackContext context)
@@ -94,6 +93,11 @@ public class PlayerController : UnitySingleton<PlayerController>
             if (RootsController.Instance.rootSprings.Count > 0 && !TouchingFloor)
             {
                 ClimbingWall = true;
+            }
+            // Check if throw count should reset
+            if (RootsController.Instance.rootSprings.Count > 0)
+            {
+                CurrentThrowCount = 0;
             }
             RootsController.Instance.ClearAllSprings();
             // Throw Player
@@ -138,6 +142,11 @@ public class PlayerController : UnitySingleton<PlayerController>
             {
                 ClimbingWall = true;
             }
+            // Check if throw count should reset
+            if (RootsController.Instance.rootSprings.Count > 0)
+            {
+                CurrentThrowCount = 0;
+            }
             RootsController.Instance.ClearAllSprings();
             // Throw Player
             ThrowPlayer(false);
@@ -159,7 +168,15 @@ public class PlayerController : UnitySingleton<PlayerController>
 
     // Throw player
     private void ThrowPlayer(bool forward)
-    {
+    { 
+
+        if (CurrentThrowCount > ThrowCount)
+        {
+            return;
+        }
+
+        CurrentThrowCount++;
+
         // Get Player Rigidbody
         Rigidbody RB = Player.GetComponent<Rigidbody>();
 
