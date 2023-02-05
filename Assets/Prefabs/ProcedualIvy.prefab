@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3757751335228306094
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3757751335228306095}
+  - component: {fileID: 3757751335228306088}
+  m_Layer: 0
+  m_Name: ProcedualIvy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3757751335228306095
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3757751335228306094}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3757751335228306088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3757751335228306094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de0628608b9d6c1448ece0de4962dc47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  recycleInterval: 5
+  branches: 4
+  maxPointsForBranch: 50
+  segmentLength: 0.07
+  branchRadius: 0.05
+  branchMaterial: {fileID: 2100000, guid: 70c429d8a9dc5554089748d60205fb12, type: 2}
+  leafMaterial: {fileID: 2100000, guid: 498104adeb547474eb1c10b6573e4bef, type: 2}
+  flowerMaterial: {fileID: 2100000, guid: 71c510e4ab8a7874c89cae037986568c, type: 2}
+  leafPrefab: {fileID: 9026227255418928623, guid: f7a822641c18f154181437fa571fb1bf,
+    type: 3}
+  flowerPrefab: {fileID: 1861703091761531123, guid: 24e8002bf6ab9a447bca796d58225a7f,
+    type: 3}
+  wantBlossoms: 0
+  ivyCollisionLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  currentBranches: []
