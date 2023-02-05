@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Global Game Jam Models_Ryan McCarty/CharacterRoots/branches around water ggj.fbx.meta
 guid: 22bd7014251a60b488ad5f062ef6f306
+========
+guid: 8e2b7170c36fc604b96e4146f08f6ec4
+>>>>>>>> 9d9913d80eef2a42a8f50f5d1d296b39f2e53d2c:Assets/branches around water ggj.fbx.meta
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
