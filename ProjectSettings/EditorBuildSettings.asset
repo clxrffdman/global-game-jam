@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Scenes/MainMenu.unity
+    guid: 792c7e6029762bc4eb8aeb9a9d61bbdb
+  - enabled: 1
+    path: Assets/Scenes/CalexVineTestingScene.unity
+    guid: 6985cf9fc350c934ea96900cc42055fc
   m_configObjects: {}
