@@ -69,7 +69,8 @@ public class RootsController : UnitySingleton<RootsController>
 
     public void Update()
     {
-        currentRootStateText.text = "Current Root State: " + currentRootState.ToString();
+        
+        currentRootStateText.text = "Current Root State: " + currentRootState.ToString() + "   Current Player State: " + PlayerController.Instance.playerState.ToString();
         UpdateAllRootSprings();
         UpdateGrowthState();
     }
@@ -89,9 +90,10 @@ public class RootsController : UnitySingleton<RootsController>
             foreach (ContactPoint point in currentContactPoints)
             {
                 rootGen.createIvy(point, currentRootProfile.visualGrowSpeed, hardenedIvyCollisionLayer);
-
+                
             }
-            
+            PlayerController.Instance.playerState = PlayerController.PlayerState.Hardened;
+
         }
 
         currentRootState = (currentRootProfile.minGrowthDuration > currentGrowthState) ? RootState.TooLoose :
@@ -148,10 +150,13 @@ public class RootsController : UnitySingleton<RootsController>
     public IEnumerator WeakenRoutine()
     {
         canRoot = false;
+        PlayerController.Instance.playerState = PlayerController.PlayerState.LooseThrow;
+        StopCoroutine(ImpactRoutine());
         yield return new WaitForSeconds(4f);
         canRoot = true;
         PlayerController.Instance.SetCurrentThrowCount(0);
         currentRootState = RootState.JustRight;
+        PlayerController.Instance.playerState = PlayerController.PlayerState.Neutral;
     }
 
     public void OnUnharden()
@@ -172,12 +177,22 @@ public class RootsController : UnitySingleton<RootsController>
         canRoot = true;
         PlayerController.Instance.SetCurrentThrowCount(0);
         currentRootState = RootState.JustRight;
+        PlayerController.Instance.playerState = PlayerController.PlayerState.Neutral;
+    }
+
+    public IEnumerator ImpactRoutine()
+    {
+        PlayerController.Instance.playerState = PlayerController.PlayerState.Impact;
+        yield return new WaitForSeconds(0.5f);
+        PlayerController.Instance.playerState = PlayerController.PlayerState.Neutral;
     }
 
 
     private void OnCollisionEnter(Collision collision)
     {
         PlayAudioOnImpact(LayerMask.LayerToName(collision.gameObject.layer));
+        StartCoroutine(ImpactRoutine());
+
 
         if (!canRoot)
         {
