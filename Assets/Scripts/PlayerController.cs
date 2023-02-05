@@ -66,7 +66,7 @@ public class PlayerController : UnitySingleton<PlayerController>
             }
             // Get Mouse Started Click Position
             mouseStartedClick = currentMousePos;
-            RootsController.Instance.ClearAllSprings();
+            
             isDragging = DragState.Left;
         }
 
@@ -81,7 +81,7 @@ public class PlayerController : UnitySingleton<PlayerController>
             // Get Mouse Released Position
             mouseFinishedClick = currentMousePos;
             mouseDelta = currentMouseDelta;
-
+            RootsController.Instance.ClearAllSprings();
             // Throw Player
             ThrowPlayer(true);
             isDragging = DragState.Null;
@@ -99,7 +99,7 @@ public class PlayerController : UnitySingleton<PlayerController>
             }
             // Get Mouse Started Click Position
             mouseStartedClick = currentMousePos;
-            RootsController.Instance.ClearAllSprings();
+            
             isDragging = DragState.Right;
         }
 
@@ -113,7 +113,7 @@ public class PlayerController : UnitySingleton<PlayerController>
             // Get Mouse Released Position
             mouseFinishedClick = currentMousePos;
             mouseDelta = currentMouseDelta;
-
+            RootsController.Instance.ClearAllSprings();
             // Throw Player
             ThrowPlayer(false);
             isDragging = DragState.Null;
@@ -135,11 +135,15 @@ public class PlayerController : UnitySingleton<PlayerController>
     // Throw player
     private void ThrowPlayer(bool forward)
     {
+        if(RootsController.Instance.rootSprings.Count != 1)
+        {
+            //return;
+        }
         // Get Player Rigidbody
         Rigidbody RB = Player.GetComponent<Rigidbody>();
 
         Vector3 direction = (Vector3)((mouseFinishedClick - mouseStartedClick).normalized);
-        direction += (Camera.main.transform.forward.normalized * camForwardScalar * (forward ? 1 : -1));
+        direction += (RootsController.Instance.rootSprings.Count == 1) ? Vector3.zero : (Camera.main.transform.forward.normalized * camForwardScalar * (forward ? 1 : -1));
         float magnitude = mouseDelta.magnitude * strengthMultiplier;
 
         // Cap magnitude of Movement at Max Strength
