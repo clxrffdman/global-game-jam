@@ -1645,7 +1645,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   neutral: {fileID: 21300000, guid: 0f83f4a6aae6aa64ea7319f701c57dd5, type: 3}
   Falling: {fileID: 21300000, guid: 6ccabf1a20490f64aba42f2d03b094c4, type: 3}
-  SuperFalling: {fileID: 21300000, guid: 6f7119dc9be812b4a88d278a2891740a, type: 3}
+  SuperFalling: {fileID: 21300000, guid: b657127d1a839dc4aa01025dea38dd7c, type: 3}
   Hardened: {fileID: 21300000, guid: 85bb15384db00cb4880424556f3f1a0e, type: 3}
   Impact: {fileID: 21300000, guid: bf72949ab0adfb64ea8bc8cdda59e432, type: 3}
   LooseThrow: {fileID: 21300000, guid: 6ccabf1a20490f64aba42f2d03b094c4, type: 3}
