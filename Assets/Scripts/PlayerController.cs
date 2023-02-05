@@ -90,7 +90,7 @@ public class PlayerController : UnitySingleton<PlayerController>
         Rigidbody RB = Player.GetComponent<Rigidbody>();
 
         Vector3 direction = (Vector3)((mouseFinishedClick - mouseStartedClick).normalized);
-        direction = (Camera.main.transform.forward.normalized * camForwardScalar * direction.y);
+        direction += (Camera.main.transform.forward.normalized * camForwardScalar * direction.y);
         float magnitude = mouseDelta.magnitude * strengthMultiplier;
 
         // Cap magnitude of Movement at Max Strength
