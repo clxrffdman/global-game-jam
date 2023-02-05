@@ -12,31 +12,13 @@ public class VolumeSlider : MonoBehaviour
 
     private void Start()
     {
-        slider = GetComponent<Slider>();
+        slider = GetComponentInChildren<Slider>();
+
     }
 
     private void FixedUpdate()
     {
-        if (mixer != null && slider != null)
-        {
-            float value = 0;
-
-            switch (index)
-            {
-                case 0:
-                    mixer.GetFloat("master", out value);
-                    break;
-                case 1:
-                    mixer.GetFloat("sfxVol", out value);
-                    break;
-                case 2:
-                    mixer.GetFloat("musicVol", out value);
-                    break;
-            }
-
-            slider.value = value;
-
-        }
+        
     }
 
     public void SetValue(float value)
@@ -45,13 +27,13 @@ public class VolumeSlider : MonoBehaviour
         {
             switch (index) {
                 case 0:
-                    mixer.SetFloat("MasterVolume", value);
+                    mixer.SetFloat("master", value);
                     break;
                 case 1:
-                    mixer.SetFloat("SFXVolume", value);
+                    mixer.SetFloat("sfxVol", value);
                     break;
                 case 2:
-                    mixer.SetFloat("MusicVolume", value);
+                    mixer.SetFloat("musicVol", value);
                     break;
             }
 
