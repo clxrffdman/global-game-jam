@@ -12,7 +12,7 @@ public class RootsController : MonoBehaviour
 
     public void Update()
     {
-        Debug.Log(currentContactPoints.Count);
+        //Debug.Log(currentContactPoints.Count);
 
         if (Input.GetKeyDown(KeyCode.L))
         {

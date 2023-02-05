@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     public float maxSpeed = 20;
     public float maxStrength = 5;
     public float strengthMultiplier = 1;
+    public float torqueStrength = 1;
+    public float camForwardScalar = 0;
 
     [Header("Root System")]
     public float SecondsTillAttached = 1f;
@@ -66,7 +68,7 @@ public class PlayerController : MonoBehaviour
         // Get Player Rigidbody
         Rigidbody RB = Player.GetComponent<Rigidbody>();
 
-        Vector3 direction = (mouseFinishedClick - mouseStartedClick).normalized;
+        Vector3 direction = (Vector3)((mouseFinishedClick - mouseStartedClick).normalized) + (Camera.main.transform.forward.normalized * camForwardScalar);
         float magnitude = mouseDelta.magnitude * strengthMultiplier;
 
         // Cap magnitude of Movement at Max Strength
@@ -76,8 +78,8 @@ public class PlayerController : MonoBehaviour
         RB.AddForceAtPosition(direction*magnitude, Player.transform.position, ForceMode.Impulse);
 
         // Rotate player
-        Vector3 torque = direction * magnitude * 0.5f;
-        Vector3 torqueY = Vector3.Project(torque, Vector3.forward);
+        Vector3 torque = direction * magnitude * torqueStrength;
+        Vector3 torqueY = Vector3.Project(torque, Vector3.right);
         RB.AddTorque(torqueY, ForceMode.Impulse);
 
         // Clamp player speed
