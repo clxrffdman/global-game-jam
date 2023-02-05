@@ -28,11 +28,12 @@ public class Branch : MonoBehaviour
     float growthSpeed = 1;
     float currentAmount = -1;
 
-    public void init(List<IvyNode> branchNodes, float branchRadius, Material material)
+    public void init(List<IvyNode> branchNodes, float branchRadius, Material material, float growthSpeed)
     {
         this.branchNodes = branchNodes;
         this.branchRadius = branchRadius;
         this.material = new Material(material);
+        this.growthSpeed = growthSpeed;
         mesh = createMesh(branchNodes);
     }
 

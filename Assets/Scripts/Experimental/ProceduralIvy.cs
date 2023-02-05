@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProceduralIvy : MonoBehaviour {
+public class ProceduralIvy : UnitySingleton<ProceduralIvy> {
 
     public Camera cam;
     [Space]
@@ -53,7 +53,7 @@ public class ProceduralIvy : MonoBehaviour {
         return t2;
     }
 
-    public void createIvy(ContactPoint contactPoint)
+    public void createIvy(ContactPoint contactPoint, float growthSpeed)
     {
         Vector3 tangent = findTangentFromArbitraryNormal(contactPoint.normal);
         GameObject ivy = new GameObject("Ivy " + ivyCount);
@@ -66,7 +66,7 @@ public class ProceduralIvy : MonoBehaviour {
             Branch b = branch.AddComponent<Branch>();
             if (!wantBlossoms)
             {
-                b.init(nodes, branchRadius, branchMaterial);
+                b.init(nodes, branchRadius, branchMaterial, growthSpeed);
             }
             else
             {
@@ -79,7 +79,7 @@ public class ProceduralIvy : MonoBehaviour {
     }
 
 
-    public void createIvy(RaycastHit hit) {
+    public void createIvy(RaycastHit hit, float growthSpeed) {
         Vector3 tangent = findTangentFromArbitraryNormal(hit.normal);
         GameObject ivy = new GameObject("Ivy " + ivyCount);
         ivy.transform.SetParent(transform);
@@ -89,7 +89,7 @@ public class ProceduralIvy : MonoBehaviour {
             GameObject branch = new GameObject("Branch " + i);
             Branch b = branch.AddComponent<Branch>();
             if (!wantBlossoms) {
-                b.init(nodes, branchRadius, branchMaterial);
+                b.init(nodes, branchRadius, branchMaterial, growthSpeed);
             } else {
                 b.init(nodes, branchRadius, branchMaterial, leafMaterial, leafPrefab, flowerMaterial, flowerPrefab, i == 0);
             }
@@ -215,7 +215,7 @@ public class ProceduralIvy : MonoBehaviour {
         return null;
     }
 
-    void combineAndClear() {
+    public void combineAndClear() {
         MeshManager.Instance.combineAll();
         foreach (Transform t in transform) {
             Destroy(t.gameObject);

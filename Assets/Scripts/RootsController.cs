@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [System.Serializable]
 public class RootSpring
@@ -17,6 +18,16 @@ public class RootSpring
     }
 }
 
+[System.Serializable]
+public class RootGrowthTagProfile
+{
+    public LayerMask layers;
+    public float minGrowthDuration;
+    public float maxGrowthDuration;
+    public float visualGrowSpeed;
+    public float hardenSpeed;
+}
+
 public class RootsController : UnitySingleton<RootsController>
 {
     
@@ -28,30 +39,35 @@ public class RootsController : UnitySingleton<RootsController>
 
     public float springForce = 1;
 
+    public float defaultGrowthRate = 1;
+
+    public List<RootGrowthTagProfile> growthProfiles = new List<RootGrowthTagProfile>();
+
     [SerializeField]
     public List<ContactPoint> currentContactPoints = new List<ContactPoint>();
     public List<RootSpring> rootSprings = new List<RootSpring>();
 
     public Coroutine rootingRoutine;
 
+    public float currentGrowthRate;
+    public float currentGrowthState;
+    public bool isRooted;
+
     public void Update()
     {
-        //Debug.Log(currentContactPoints.Count);
-
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            foreach(ContactPoint point in currentContactPoints)
-            {
-                rootGen.createIvy(point);
-            }
-        }
 
         UpdateAllRootSprings();
+        UpdateGrowthState();
     }
 
-    public void CheckRoots()
+    public void UpdateGrowthState()
     {
-        
+        if (!isRooted)
+        {
+            return;
+        }
+
+        currentGrowthState += 1f * Time.deltaTime;
     }
 
     public IEnumerator RootingRoutine()
@@ -62,6 +78,8 @@ public class RootsController : UnitySingleton<RootsController>
 
     public void ClearAllSprings()
     {
+        ProceduralIvy.Instance.combineAndClear();
+
         int numRoots = rootSprings.Count;
 
         for(int i = rootSprings.Count -1; i >= 0; i--)
@@ -77,8 +95,8 @@ public class RootsController : UnitySingleton<RootsController>
         }
 
         rootSprings.Clear();
-
-        
+        currentGrowthState = 0;
+        isRooted = false;
     }
 
     public void UpdateAllRootSprings()
@@ -121,12 +139,38 @@ public class RootsController : UnitySingleton<RootsController>
 
             foreach (ContactPoint point in currentContactPoints)
             {
-                rootGen.createIvy(point);
+                rootGen.createIvy(point, GetGrowthProfileFromLayer(collision.gameObject.layer).visualGrowSpeed);
             }
+            isRooted = true;
         }
 
 
     }
+
+    public float GetGrowthRateFromLayer(int layer)
+    {
+        var foundItem = growthProfiles.FirstOrDefault(item => item.layers == (item.layers | (1 << layer)));
+
+        if (foundItem == null)
+        {
+            return defaultGrowthRate;
+        }
+
+        return foundItem.visualGrowSpeed;
+    }
+
+    public RootGrowthTagProfile GetGrowthProfileFromLayer(int layer)
+    {
+        var foundItem = growthProfiles.FirstOrDefault(item => item.layers == (item.layers | (1 << layer)));
+
+        if (foundItem == null)
+        {
+            return growthProfiles[0];
+        }
+
+        return foundItem;
+    }
+
 
     private void OnCollisionExit(Collision collision)
     {
