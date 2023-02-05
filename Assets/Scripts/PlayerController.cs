@@ -6,6 +6,7 @@ using UnityEngine.ProBuilder.Shapes;
 
 public class PlayerController : UnitySingleton<PlayerController>
 {
+    public enum DragState { Null, Left, Right };
     [Header("Tuning Variables")]
 
     public float maxSpeed = 20;
@@ -29,6 +30,10 @@ public class PlayerController : UnitySingleton<PlayerController>
     private Vector2 mouseFinishedClick;
 
     private Vector2 mouseDelta; // For swipe magnitute
+
+    [Header("Current State")]
+    
+    public DragState isDragging;
 
     private void Start()
     {
@@ -55,22 +60,66 @@ public class PlayerController : UnitySingleton<PlayerController>
         // Input Just Held (Left Mouse Button Held)
         if (context.started)
         {
+            if(isDragging == DragState.Right)
+            {
+                return;
+            }
             // Get Mouse Started Click Position
             mouseStartedClick = currentMousePos;
             RootsController.Instance.ClearAllSprings();
+            isDragging = DragState.Left;
         }
+
 
         // Input Just stopped (Left Mouse Button Released)
         if (context.canceled)
         {
+            if(isDragging != DragState.Left)
+            {
+                return;
+            }
             // Get Mouse Released Position
             mouseFinishedClick = currentMousePos;
             mouseDelta = currentMouseDelta;
 
             // Throw Player
-            ThrowPlayer();
+            ThrowPlayer(true);
+            isDragging = DragState.Null;
         }
     }
+
+    public void OnAltInput(InputAction.CallbackContext context)
+    {
+        // Input Just Held (Left Mouse Button Held)
+        if (context.started)
+        {
+            if (isDragging == DragState.Left)
+            {
+                return;
+            }
+            // Get Mouse Started Click Position
+            mouseStartedClick = currentMousePos;
+            RootsController.Instance.ClearAllSprings();
+            isDragging = DragState.Right;
+        }
+
+        // Input Just stopped (Left Mouse Button Released)
+        if (context.canceled)
+        {
+            if (isDragging != DragState.Right)
+            {
+                return;
+            }
+            // Get Mouse Released Position
+            mouseFinishedClick = currentMousePos;
+            mouseDelta = currentMouseDelta;
+
+            // Throw Player
+            ThrowPlayer(false);
+            isDragging = DragState.Null;
+        }
+    }
+
     // Update Mouse Positiion
     public void UpdateMousePos(InputAction.CallbackContext context)
     {
@@ -84,13 +133,13 @@ public class PlayerController : UnitySingleton<PlayerController>
     }
 
     // Throw player
-    private void ThrowPlayer()
+    private void ThrowPlayer(bool forward)
     {
         // Get Player Rigidbody
         Rigidbody RB = Player.GetComponent<Rigidbody>();
 
         Vector3 direction = (Vector3)((mouseFinishedClick - mouseStartedClick).normalized);
-        direction += (Camera.main.transform.forward.normalized * camForwardScalar * direction.y);
+        direction += (Camera.main.transform.forward.normalized * camForwardScalar * (forward ? 1 : -1));
         float magnitude = mouseDelta.magnitude * strengthMultiplier;
 
         // Cap magnitude of Movement at Max Strength

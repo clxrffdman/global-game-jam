@@ -62,12 +62,23 @@ public class RootsController : UnitySingleton<RootsController>
 
     public void ClearAllSprings()
     {
+        int numRoots = rootSprings.Count;
+
         for(int i = rootSprings.Count -1; i >= 0; i--)
         {
             Destroy(rootSprings[i].joint);
             rootSprings[i] = null;
         }
+
+        if(numRoots > 0)
+        {
+            PlayerController.Instance.rb.velocity = Vector3.zero;
+            PlayerController.Instance.rb.angularVelocity = Vector3.zero;
+        }
+
         rootSprings.Clear();
+
+        
     }
 
     public void UpdateAllRootSprings()
@@ -107,6 +118,11 @@ public class RootsController : UnitySingleton<RootsController>
             newSpring.joint.enableCollision = true;
             //rootGen.createIvy(collision.contacts[0]);
             newSpring.UpdateRootSpring(rootStrengthRate);
+
+            foreach (ContactPoint point in currentContactPoints)
+            {
+                rootGen.createIvy(point);
+            }
         }
 
 
