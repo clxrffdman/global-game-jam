@@ -36,9 +36,6 @@ public class VolumeSlider : MonoBehaviour
                     mixer.SetFloat("musicVol", value);
                     break;
             }
-
-
-            
         }
     }
 }
