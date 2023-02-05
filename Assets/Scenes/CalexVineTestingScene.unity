@@ -1150,7 +1150,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0.5
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -1169,7 +1169,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rootGen: {fileID: 1201862900}
+  baseRootStrength: 0
   rootStrength: 0
+  rootStrengthRate: 1
+  springForce: 1
+  rootSprings: []
 --- !u!4 &1795986393 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3569423174339244110, guid: 7a78200203cacaf4b99bcba8f12d035b,
@@ -1567,7 +1571,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0b3d0b138185634f9433f7fff3b7d0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 20
+  maxSpeed: 10
   maxStrength: 7
   strengthMultiplier: 0.4
   torqueStrength: 0.3
@@ -1575,6 +1579,7 @@ MonoBehaviour:
   SecondsTillAttached: 1
   SecondsTillStuck: 3
   Player: {fileID: 1722069654}
+  rb: {fileID: 0}
 --- !u!4 &2021523222
 Transform:
   m_ObjectHideFlags: 0

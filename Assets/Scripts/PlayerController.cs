@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder.Shapes;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : UnitySingleton<PlayerController>
 {
     [Header("Tuning Variables")]
 
@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Dependencies")]
     public GameObject Player;
+    public Rigidbody rb;
 
     private Vector2 currentMousePos;
     private Vector2 currentMouseDelta;
@@ -29,8 +30,16 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 mouseDelta; // For swipe magnitute
 
+    private void Start()
+    {
+        rb = Player.GetComponent<Rigidbody>();
+    }
+
     private void Update()
     {
+
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
+
         if (Input.GetKeyDown(KeyCode.R))
         {
 
@@ -48,6 +57,7 @@ public class PlayerController : MonoBehaviour
         {
             // Get Mouse Started Click Position
             mouseStartedClick = currentMousePos;
+            RootsController.Instance.ClearAllSprings();
         }
 
         // Input Just stopped (Left Mouse Button Released)
@@ -79,7 +89,8 @@ public class PlayerController : MonoBehaviour
         // Get Player Rigidbody
         Rigidbody RB = Player.GetComponent<Rigidbody>();
 
-        Vector3 direction = (Vector3)((mouseFinishedClick - mouseStartedClick).normalized) + (Camera.main.transform.forward.normalized * camForwardScalar);
+        Vector3 direction = (Vector3)((mouseFinishedClick - mouseStartedClick).normalized);
+        direction = (Camera.main.transform.forward.normalized * camForwardScalar * direction.y);
         float magnitude = mouseDelta.magnitude * strengthMultiplier;
 
         // Cap magnitude of Movement at Max Strength
