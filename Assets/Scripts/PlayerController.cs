@@ -29,6 +29,17 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 mouseDelta; // For swipe magnitute
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+
+        }
+    }
+
+
+
+
     // Process Player Input Click
     public void OnMainInput(InputAction.CallbackContext context)
     {
