@@ -1926,6 +1926,36 @@ PrefabInstance:
       propertyPath: currentRootStateText
       value: 
       objectReference: {fileID: 188773369}
+    - target: {fileID: 5053252757167584957, guid: 80786676f4c8e3c4fa6976b96a384ebe,
+        type: 3}
+      propertyPath: growthProfiles.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5053252757167584957, guid: 80786676f4c8e3c4fa6976b96a384ebe,
+        type: 3}
+      propertyPath: growthProfiles.Array.data[1].hardenSpeed
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5053252757167584957, guid: 80786676f4c8e3c4fa6976b96a384ebe,
+        type: 3}
+      propertyPath: growthProfiles.Array.data[1].layers.m_Bits
+      value: 256
+      objectReference: {fileID: 0}
+    - target: {fileID: 5053252757167584957, guid: 80786676f4c8e3c4fa6976b96a384ebe,
+        type: 3}
+      propertyPath: growthProfiles.Array.data[1].visualGrowSpeed
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5053252757167584957, guid: 80786676f4c8e3c4fa6976b96a384ebe,
+        type: 3}
+      propertyPath: growthProfiles.Array.data[1].maxGrowthDuration
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5053252757167584957, guid: 80786676f4c8e3c4fa6976b96a384ebe,
+        type: 3}
+      propertyPath: growthProfiles.Array.data[1].minGrowthDuration
+      value: 1.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 80786676f4c8e3c4fa6976b96a384ebe, type: 3}
 --- !u!1001 &5432747449846237984
