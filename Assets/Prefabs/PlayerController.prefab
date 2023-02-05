@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 3969
   maxSpeed: 20
   maxStrength: 8
   strengthMultiplier: 0.5
@@ -59,6 +59,8 @@ MonoBehaviour:
   Player: {fileID: 0}
   rb: {fileID: 0}
   CurrentThrowCount: 0
+  fallingDuration: 0
+  playerState: 0
   isDragging: 0
 --- !u!114 &8584802262239809841
 MonoBehaviour:
