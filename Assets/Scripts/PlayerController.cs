@@ -199,6 +199,8 @@ public class PlayerController : UnitySingleton<PlayerController>
 
         Vector3 direction = (Vector3)((mouseFinishedClick - mouseStartedClick).normalized);
 
+        direction = new Vector3(0, direction.y, direction.x);
+
         float magnitude = mouseDelta.magnitude * strengthMultiplier;
 
         // If player not on wall, move forward instead of up
