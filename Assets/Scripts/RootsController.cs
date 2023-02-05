@@ -55,6 +55,9 @@ public class RootsController : UnitySingleton<RootsController>
     public bool isRooted;
     public bool canRoot = true;
 
+    public LayerMask standardIvyCollisionLayer;
+    public LayerMask hardenedIvyCollisionLayer;
+
     public enum RootState { TooLoose, JustRight, Hardened };
     public RootState currentRootState;
 
@@ -79,6 +82,17 @@ public class RootsController : UnitySingleton<RootsController>
         }
 
         currentGrowthState += 1f * Time.deltaTime;
+
+        if(currentRootState == RootState.JustRight && currentGrowthState > currentRootProfile.maxGrowthDuration)
+        {
+
+            foreach (ContactPoint point in currentContactPoints)
+            {
+                rootGen.createIvy(point, currentRootProfile.visualGrowSpeed, hardenedIvyCollisionLayer);
+
+            }
+            
+        }
 
         currentRootState = (currentRootProfile.minGrowthDuration > currentGrowthState) ? RootState.TooLoose :
             (currentRootProfile.maxGrowthDuration > currentGrowthState) ? RootState.JustRight : RootState.Hardened;
@@ -163,6 +177,8 @@ public class RootsController : UnitySingleton<RootsController>
 
     private void OnCollisionEnter(Collision collision)
     {
+        PlayAudioOnImpact(LayerMask.LayerToName(collision.gameObject.layer));
+
         if (!canRoot)
         {
             return;
@@ -198,13 +214,39 @@ public class RootsController : UnitySingleton<RootsController>
 
             foreach (ContactPoint point in currentContactPoints)
             {
-                rootGen.createIvy(point, currentRootProfile.visualGrowSpeed);
+                rootGen.createIvy(point, currentRootProfile.visualGrowSpeed, standardIvyCollisionLayer);
             }
             
             isRooted = true;
         }
 
 
+
+    }
+
+
+
+    public void PlayAudioOnImpact(string layerName)
+    {
+        Debug.Log(layerName);
+        switch (layerName)
+        {
+            case "Ground":
+                AudioManager.Instance.PlaySoundEffect("impact_misc", 1);
+                break;
+            case "Metal":
+                AudioManager.Instance.PlaySoundEffect("impact_metal", 1);
+                break;
+            case "Wood":
+                AudioManager.Instance.PlaySoundEffect("impact_wood", 1);
+                break;
+            default:
+                break;
+
+        }
+
+
+        
     }
 
     public float GetGrowthRateFromLayer(int layer)

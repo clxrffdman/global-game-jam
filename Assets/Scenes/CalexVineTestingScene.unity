@@ -1478,8 +1478,18 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3240772448524142987, guid: b3e5ceae09cb8974b8a1ab9b7178dada,
         type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3240772448524142987, guid: b3e5ceae09cb8974b8a1ab9b7178dada,
+        type: 3}
       propertyPath: m_TagString
       value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 3240772449080974143, guid: b3e5ceae09cb8974b8a1ab9b7178dada,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3240772449080974143, guid: b3e5ceae09cb8974b8a1ab9b7178dada,
         type: 3}
@@ -1545,6 +1555,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TerrainGroup_0 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3240772449746172349, guid: b3e5ceae09cb8974b8a1ab9b7178dada,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3240772449746172349, guid: b3e5ceae09cb8974b8a1ab9b7178dada,
         type: 3}
@@ -1926,36 +1941,6 @@ PrefabInstance:
       propertyPath: currentRootStateText
       value: 
       objectReference: {fileID: 188773369}
-    - target: {fileID: 5053252757167584957, guid: 80786676f4c8e3c4fa6976b96a384ebe,
-        type: 3}
-      propertyPath: growthProfiles.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5053252757167584957, guid: 80786676f4c8e3c4fa6976b96a384ebe,
-        type: 3}
-      propertyPath: growthProfiles.Array.data[1].hardenSpeed
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5053252757167584957, guid: 80786676f4c8e3c4fa6976b96a384ebe,
-        type: 3}
-      propertyPath: growthProfiles.Array.data[1].layers.m_Bits
-      value: 256
-      objectReference: {fileID: 0}
-    - target: {fileID: 5053252757167584957, guid: 80786676f4c8e3c4fa6976b96a384ebe,
-        type: 3}
-      propertyPath: growthProfiles.Array.data[1].visualGrowSpeed
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5053252757167584957, guid: 80786676f4c8e3c4fa6976b96a384ebe,
-        type: 3}
-      propertyPath: growthProfiles.Array.data[1].maxGrowthDuration
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5053252757167584957, guid: 80786676f4c8e3c4fa6976b96a384ebe,
-        type: 3}
-      propertyPath: growthProfiles.Array.data[1].minGrowthDuration
-      value: 1.5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 80786676f4c8e3c4fa6976b96a384ebe, type: 3}
 --- !u!1001 &5432747449846237984

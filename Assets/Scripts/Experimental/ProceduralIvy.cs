@@ -56,15 +56,18 @@ public class ProceduralIvy : UnitySingleton<ProceduralIvy> {
         return t2;
     }
 
-    public void createIvy(ContactPoint contactPoint, float growthSpeed)
+    public void createIvy(ContactPoint contactPoint, float growthSpeed, LayerMask collisionLayer)
     {
         Vector3 tangent = findTangentFromArbitraryNormal(contactPoint.normal);
         GameObject ivy = new GameObject("Ivy " + ivyCount);
         ivy.transform.SetParent(transform);
-        for (int i = 0; i < branches; i++)
+
+        int maxBranches = branches + Random.Range(-1,2);
+
+        for (int i = 0; i < maxBranches; i++)
         {
             Vector3 dir = Quaternion.AngleAxis(360 / branches * i + Random.Range(0, 360 / branches), contactPoint.normal) * tangent;
-            List<IvyNode> nodes = createBranch(maxPointsForBranch, contactPoint.point, contactPoint.normal, dir);
+            List<IvyNode> nodes = createBranch(maxPointsForBranch, contactPoint.point, contactPoint.normal, dir, collisionLayer);
             GameObject branch = new GameObject("Branch " + i);
             Branch b = branch.AddComponent<Branch>();
             currentBranches.Add(b);
@@ -83,13 +86,13 @@ public class ProceduralIvy : UnitySingleton<ProceduralIvy> {
     }
 
 
-    public void createIvy(RaycastHit hit, float growthSpeed) {
+    public void createIvy(RaycastHit hit, float growthSpeed, LayerMask collisionLayer) {
         Vector3 tangent = findTangentFromArbitraryNormal(hit.normal);
         GameObject ivy = new GameObject("Ivy " + ivyCount);
         ivy.transform.SetParent(transform);
         for (int i = 0; i < branches; i++) {
             Vector3 dir = Quaternion.AngleAxis(360 / branches * i + Random.Range(0, 360 / branches), hit.normal) * tangent;
-            List<IvyNode> nodes = createBranch(maxPointsForBranch, hit.point, hit.normal, dir);
+            List<IvyNode> nodes = createBranch(maxPointsForBranch, hit.point, hit.normal, dir, collisionLayer);
             GameObject branch = new GameObject("Branch " + i);
             Branch b = branch.AddComponent<Branch>();
             currentBranches.Add(b);
@@ -115,13 +118,13 @@ public class ProceduralIvy : UnitySingleton<ProceduralIvy> {
         return p + normal * 0.01f;
     }
 
-    bool isOccluded(Vector3 from, Vector3 to) {
+    bool isOccluded(Vector3 from, Vector3 to, LayerMask collisionLayer) {
         Ray ray = new Ray(from, (to - from) / (to - from).magnitude);
-        return Physics.Raycast(ray, (to - from).magnitude, ivyCollisionLayer);
+        return Physics.Raycast(ray, (to - from).magnitude, collisionLayer);
     }
 
-    bool isOccluded(Vector3 from, Vector3 to, Vector3 normal) {
-        return isOccluded(applyCorrection(from, normal), applyCorrection(to, normal));
+    bool isOccluded(Vector3 from, Vector3 to, Vector3 normal, LayerMask collisionLayer) {
+        return isOccluded(applyCorrection(from, normal), applyCorrection(to, normal), collisionLayer);
     }
 
     Vector3 calculateMiddlePoint(Vector3 p0, Vector3 p1, Vector3 normal) {
@@ -132,11 +135,11 @@ public class ProceduralIvy : UnitySingleton<ProceduralIvy> {
         return middle + normal * distance;
     }
 
-    List<IvyNode> createBranch(int count, Vector3 pos, Vector3 normal, Vector3 dir) {
+    List<IvyNode> createBranch(int count, Vector3 pos, Vector3 normal, Vector3 dir, LayerMask collisionLayer) {
 
         if (count == maxPointsForBranch) {
             IvyNode rootNode = new IvyNode(pos, normal);
-            return new List<IvyNode> { rootNode }.join(createBranch(count - 1, pos, normal, dir));
+            return new List<IvyNode> { rootNode }.join(createBranch(count - 1, pos, normal, dir, collisionLayer));
         } else if (count < maxPointsForBranch && count > 0) {
 
             if (count % 2 == 0) {
@@ -147,23 +150,23 @@ public class ProceduralIvy : UnitySingleton<ProceduralIvy> {
             Ray ray = new Ray(pos, normal);
             Vector3 p1 = pos + normal * segmentLength;
 
-            if (Physics.Raycast(ray, out hit, segmentLength, ivyCollisionLayer)) {
+            if (Physics.Raycast(ray, out hit, segmentLength, collisionLayer)) {
                 p1 = hit.point;
             }
             ray = new Ray(p1, dir);
 
-            if (Physics.Raycast(ray, out hit, segmentLength, ivyCollisionLayer)) {
+            if (Physics.Raycast(ray, out hit, segmentLength, collisionLayer)) {
                 Vector3 p2 = hit.point;
                 IvyNode p2Node = new IvyNode(p2, -dir);
-                return new List<IvyNode> { p2Node }.join(createBranch(count - 1, p2, -dir, normal));
+                return new List<IvyNode> { p2Node }.join(createBranch(count - 1, p2, -dir, normal, collisionLayer));
             } else {
                 Vector3 p2 = p1 + dir * segmentLength;
                 ray = new Ray(applyCorrection(p2, normal), -normal);
-                if (Physics.Raycast(ray, out hit, segmentLength, ivyCollisionLayer)) {
+                if (Physics.Raycast(ray, out hit, segmentLength, collisionLayer)) {
                     Vector3 p3 = hit.point;
                     IvyNode p3Node = new IvyNode(p3, normal);
 
-                    if (isOccluded(p3, pos, normal)) {
+                    if (isOccluded(p3, pos, normal, collisionLayer)) {
                         Vector3 middle = calculateMiddlePoint(p3, pos, (normal + dir) / 2);
 
                         Vector3 m0 = (pos + middle) / 2;
@@ -172,19 +175,19 @@ public class ProceduralIvy : UnitySingleton<ProceduralIvy> {
                         IvyNode m0Node = new IvyNode(m0, normal);
                         IvyNode m1Node = new IvyNode(m1, normal);
 
-                        return new List<IvyNode> { m0Node, m1Node, p3Node }.join(createBranch(count - 3, p3, normal, dir));
+                        return new List<IvyNode> { m0Node, m1Node, p3Node }.join(createBranch(count - 3, p3, normal, dir, collisionLayer));
                     }
 
-                    return new List<IvyNode> { p3Node }.join(createBranch(count - 1, p3, normal, dir));
+                    return new List<IvyNode> { p3Node }.join(createBranch(count - 1, p3, normal, dir, collisionLayer));
                 } else {
                     Vector3 p3 = p2 - normal * segmentLength;
                     ray = new Ray(applyCorrection(p3, normal), -normal);
 
-                    if (Physics.Raycast(ray, out hit, segmentLength, ivyCollisionLayer)) {
+                    if (Physics.Raycast(ray, out hit, segmentLength, collisionLayer)) {
                         Vector3 p4 = hit.point;
                         IvyNode p4Node = new IvyNode(p4, normal);
 
-                        if (isOccluded(p4, pos, normal)) {
+                        if (isOccluded(p4, pos, normal, collisionLayer)) {
                             Vector3 middle = calculateMiddlePoint(p4, pos, (normal + dir) / 2);
                             Vector3 m0 = (pos + middle) / 2;
                             Vector3 m1 = (p4 + middle) / 2;
@@ -192,15 +195,15 @@ public class ProceduralIvy : UnitySingleton<ProceduralIvy> {
                             IvyNode m0Node = new IvyNode(m0, normal);
                             IvyNode m1Node = new IvyNode(m1, normal);
 
-                            return new List<IvyNode> { m0Node, m1Node, p4Node }.join(createBranch(count - 3, p4, normal, dir));
+                            return new List<IvyNode> { m0Node, m1Node, p4Node }.join(createBranch(count - 3, p4, normal, dir, collisionLayer));
                         }
 
-                        return new List<IvyNode> { p4Node }.join(createBranch(count - 1, p4, normal, dir));
+                        return new List<IvyNode> { p4Node }.join(createBranch(count - 1, p4, normal, dir, collisionLayer));
                     } else {
                         Vector3 p4 = p3 - normal * segmentLength;
                         IvyNode p4Node = new IvyNode(p4, dir);
 
-                        if (isOccluded(p4, pos, normal)) {
+                        if (isOccluded(p4, pos, normal, collisionLayer)) {
                             Vector3 middle = calculateMiddlePoint(p4, pos, (normal + dir) / 2);
 
                             Vector3 m0 = (pos + middle) / 2;
@@ -209,9 +212,9 @@ public class ProceduralIvy : UnitySingleton<ProceduralIvy> {
                             IvyNode m0Node = new IvyNode(m0, dir);
                             IvyNode m1Node = new IvyNode(m1, dir);
 
-                            return new List<IvyNode> { m0Node, m1Node, p4Node }.join(createBranch(count - 3, p4, dir, -normal));
+                            return new List<IvyNode> { m0Node, m1Node, p4Node }.join(createBranch(count - 3, p4, dir, -normal, collisionLayer));
                         }
-                        return new List<IvyNode> { p4Node }.join(createBranch(count - 1, p4, dir, -normal));
+                        return new List<IvyNode> { p4Node }.join(createBranch(count - 1, p4, dir, -normal, collisionLayer));
                     }
                 }
             }

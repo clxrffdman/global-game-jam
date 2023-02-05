@@ -60,5 +60,5 @@ MonoBehaviour:
   wantBlossoms: 0
   ivyCollisionLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 897
   currentBranches: []

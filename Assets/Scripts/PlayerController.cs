@@ -130,7 +130,7 @@ public class PlayerController : UnitySingleton<PlayerController>
             // Done here, before we clear springs, so we can use this info in ThrowPlayer later
             ClimbingWall = false;
             RaycastHit hit;
-            bool TouchingFloor = Physics.Raycast(Player.transform.position, Vector3.down, out hit, 2f, groundLayer);
+            bool TouchingFloor = Physics.Raycast(Player.transform.position, Vector3.down, out hit, 0.2f, groundLayer);
 
             if (RootsController.Instance.rootSprings.Count > 0 && !TouchingFloor)
             {
@@ -170,7 +170,7 @@ public class PlayerController : UnitySingleton<PlayerController>
         }
 
         RaycastHit hit;
-        CurrentThrowCount += Physics.Raycast(Player.transform.position, Vector3.down, out hit, 2f, groundLayer) ? 0 : 1;
+        CurrentThrowCount += Physics.Raycast(Player.transform.position, Vector3.down, out hit, 0.2f, groundLayer) ? 0 : 1;
 
         // Get Player Rigidbody
         Rigidbody RB = Player.GetComponent<Rigidbody>();
@@ -181,7 +181,7 @@ public class PlayerController : UnitySingleton<PlayerController>
 
         // If player not on wall, move forward instead of up
         if (ClimbingWall == false)
-        {
+        { 
             RB.AddForceAtPosition((Camera.main.transform.forward.normalized * camForwardScalar * (forward ? 1 : -1)) * magnitude, Player.transform.position, ForceMode.Impulse);
             
         }

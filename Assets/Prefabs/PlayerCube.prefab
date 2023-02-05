@@ -142,6 +142,13 @@ MonoBehaviour:
     maxGrowthDuration: 2.5
     visualGrowSpeed: 1
     hardenSpeed: 1
+  - layers:
+      serializedVersion: 2
+      m_Bits: 256
+    minGrowthDuration: 1.5
+    maxGrowthDuration: 3
+    visualGrowSpeed: 0.8
+    hardenSpeed: 0.8
   rootSprings: []
   currentGrowthRate: 0
   currentGrowthState: 0
@@ -155,4 +162,10 @@ MonoBehaviour:
     hardenSpeed: 0
   isRooted: 0
   canRoot: 1
+  standardIvyCollisionLayer:
+    serializedVersion: 2
+    m_Bits: 897
+  hardenedIvyCollisionLayer:
+    serializedVersion: 2
+    m_Bits: 961
   currentRootState: 0

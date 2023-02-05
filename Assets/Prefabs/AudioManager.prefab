@@ -47,7 +47,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioOneShotPrefab: {fileID: 6665425759844494090, guid: 987e18b54f10f174b8a4df9e13ba1b32,
     type: 3}
-  soundEffectList: []
+  soundEffectList:
+  - name: impact_gravel
+    clip:
+    - {fileID: 8300000, guid: 1dcc505d4d9b60f4a807b7dcdfe6c028, type: 3}
+    - {fileID: 8300000, guid: 71deea0d2858e16448d4fe265c19a8cb, type: 3}
+    - {fileID: 8300000, guid: 6375285bedfa5454bb6e255ad048fa4f, type: 3}
+    - {fileID: 8300000, guid: 56bed62da71634545bab8b0f7f9a456e, type: 3}
+    - {fileID: 8300000, guid: 6a21cb9c63cc0f04a9ba933695c21d7c, type: 3}
+    - {fileID: 8300000, guid: ea119154b80c3a04aafd8ccae70d0d31, type: 3}
+    - {fileID: 8300000, guid: 58c9ff297b6889d4798229b22e930851, type: 3}
+    - {fileID: 8300000, guid: 775f6e64981a57949a35af6bcc05f2da, type: 3}
+  - name: impact_metal
+    clip:
+    - {fileID: 8300000, guid: b451944b6529ef64bb54dc44c5190e98, type: 3}
+    - {fileID: 8300000, guid: 3b1172362005a9e428ea053d2b8c45d5, type: 3}
+    - {fileID: 8300000, guid: dd5bc7ca4f60a884d98c5eb6db3b23e1, type: 3}
+  - name: impact_misc
+    clip:
+    - {fileID: 8300000, guid: 01126f8cb73363740af3b6864a329f1b, type: 3}
+    - {fileID: 8300000, guid: 67fa5a03979b4d243a191a74394cbacc, type: 3}
+    - {fileID: 8300000, guid: bf9c6c3deb58cef459f8d9e519beaa56, type: 3}
+    - {fileID: 8300000, guid: f41cee25764c7ed43a9bdb1e4203c42a, type: 3}
+    - {fileID: 8300000, guid: e76528b495e95204ca3d1a05afc95a12, type: 3}
+    - {fileID: 8300000, guid: 1e7bbd502cd6ea94ca1ce05e7ca57dfa, type: 3}
+  - name: impact_snow
+    clip:
+    - {fileID: 8300000, guid: 220a4b5b4030b7441a2fd0e83853ad74, type: 3}
+    - {fileID: 8300000, guid: 24119ecf217dd79459b2c2f2c4511544, type: 3}
+    - {fileID: 8300000, guid: 0f7b410bd64753f48b8a669d65636106, type: 3}
+    - {fileID: 8300000, guid: 6f1e19b81c843c348be399a3dd67a413, type: 3}
+  - name: impact_wood
+    clip:
+    - {fileID: 8300000, guid: f3f2e9c90305a4341a8c7b0e3ca4c306, type: 3}
+    - {fileID: 8300000, guid: 66c934c62fc7aa140b36009d3a772209, type: 3}
+    - {fileID: 8300000, guid: 2fa2670b597dbe64da8581da16febb8f, type: 3}
+    - {fileID: 8300000, guid: 426bf7ef48f28934e88456bf6cdcbae0, type: 3}
+    - {fileID: 8300000, guid: 3ed7dc03d563c0646aa3b39f6c0f030c, type: 3}
 --- !u!82 &8458985388463129488
 AudioSource:
   m_ObjectHideFlags: 0
