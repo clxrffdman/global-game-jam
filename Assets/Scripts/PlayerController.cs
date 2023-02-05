@@ -7,6 +7,7 @@ using UnityEngine.ProBuilder.Shapes;
 public class PlayerController : UnitySingleton<PlayerController>
 {
     public enum DragState { Null, Left, Right };
+    public enum PlayerState { Neutral, Falling, SuperFalling, Hardened, Impact, LooseThrow, Release };
     [Header("Tuning Variables")]
 
     public LayerMask groundLayer;
@@ -38,6 +39,8 @@ public class PlayerController : UnitySingleton<PlayerController>
 
     [Header("Current State")]
 
+    public float fallingDuration;
+    public PlayerState playerState;
     public DragState isDragging;
 
     private void Start()
@@ -48,6 +51,25 @@ public class PlayerController : UnitySingleton<PlayerController>
     private void Update()
     {
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
+
+        if(rb.velocity.y < 0)
+        {
+            fallingDuration += Time.deltaTime;
+
+            if(fallingDuration > 2)
+            {
+                playerState = PlayerState.Falling;
+            }
+
+            if (fallingDuration > 3.5f)
+            {
+                playerState = PlayerState.SuperFalling;
+            }
+        }
+        else
+        {
+            fallingDuration = 0;
+        }
     }
 
     // Process Player Input Click
