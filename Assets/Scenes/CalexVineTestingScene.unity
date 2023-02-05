@@ -318,6 +318,161 @@ PrefabInstance:
       propertyPath: m_Name
       value: env
       objectReference: {fileID: 0}
+    - target: {fileID: 7364443750152321723, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443750205219769, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443750208392563, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443750209205679, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443750245602797, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443750266139557, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443750511245148, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443750523511188, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443750592157826, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443750632785869, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443750805718698, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443750813805374, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443750935450030, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443750958623979, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443751162743049, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443751365029746, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443751368084160, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443751491202596, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443751501353254, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443751518706951, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443751610073623, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443751956174411, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443752035113692, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443752111546907, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7364443752220392259, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7706410217280197238, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7706410217280197238, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7706410217827909826, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7706410217827909826, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
+    - target: {fileID: 7706410218492846656, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7706410218492846656, guid: 7b4361919778f4443b10e832318b2177,
+        type: 3}
+      propertyPath: m_TagString
+      value: Climbable
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b4361919778f4443b10e832318b2177, type: 3}
 --- !u!1 &989499861
