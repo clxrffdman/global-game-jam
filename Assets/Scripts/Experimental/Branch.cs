@@ -104,6 +104,12 @@ public class Branch : MonoBehaviour
 
     }
 
+    public void stopGrowth()
+    {
+        animate = false;
+        MeshManager.Instance.addMesh(transform, meshFilter.mesh, meshRenderer.sharedMaterial);
+    }
+
     float remap(float input, float oldLow, float oldHigh, float newLow, float newHigh)
     {
         float t = Mathf.InverseLerp(oldLow, oldHigh, input);

@@ -23,6 +23,9 @@ public class ProceduralIvy : UnitySingleton<ProceduralIvy> {
     public bool wantBlossoms;
     public LayerMask ivyCollisionLayer;
 
+
+    public List<Branch> currentBranches = new List<Branch>();
+
     int ivyCount = 0;
 
     void Update() {
@@ -64,6 +67,7 @@ public class ProceduralIvy : UnitySingleton<ProceduralIvy> {
             List<IvyNode> nodes = createBranch(maxPointsForBranch, contactPoint.point, contactPoint.normal, dir);
             GameObject branch = new GameObject("Branch " + i);
             Branch b = branch.AddComponent<Branch>();
+            currentBranches.Add(b);
             if (!wantBlossoms)
             {
                 b.init(nodes, branchRadius, branchMaterial, growthSpeed);
@@ -88,6 +92,7 @@ public class ProceduralIvy : UnitySingleton<ProceduralIvy> {
             List<IvyNode> nodes = createBranch(maxPointsForBranch, hit.point, hit.normal, dir);
             GameObject branch = new GameObject("Branch " + i);
             Branch b = branch.AddComponent<Branch>();
+            currentBranches.Add(b);
             if (!wantBlossoms) {
                 b.init(nodes, branchRadius, branchMaterial, growthSpeed);
             } else {
@@ -220,6 +225,17 @@ public class ProceduralIvy : UnitySingleton<ProceduralIvy> {
         foreach (Transform t in transform) {
             Destroy(t.gameObject);
         }
+    }
+
+    public void placeWIPRoots()
+    {
+        foreach(Branch b in currentBranches)
+        {
+            b.stopGrowth();
+        }
+
+        combineAndClear();
+        currentBranches.Clear();
     }
 
 }

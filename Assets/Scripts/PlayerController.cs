@@ -34,7 +34,7 @@ public class PlayerController : UnitySingleton<PlayerController>
     private Vector2 mouseDelta; // For swipe magnitute
 
     private bool ClimbingWall = false;
-    private int CurrentThrowCount = 0;
+    public int CurrentThrowCount = 0;
 
     [Header("Current State")]
 
@@ -47,13 +47,7 @@ public class PlayerController : UnitySingleton<PlayerController>
 
     private void Update()
     {
-
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-
-        }
     }
 
     // Process Player Input Click
@@ -62,7 +56,7 @@ public class PlayerController : UnitySingleton<PlayerController>
         // Input Just Held (Left Mouse Button Held)
         if (context.started)
         {
-            if (isDragging == DragState.Right)
+            if (isDragging == DragState.Right || RootsController.Instance.currentRootState == RootsController.RootState.Hardened || !RootsController.Instance.canRoot)
             {
                 return;
             }
@@ -76,7 +70,7 @@ public class PlayerController : UnitySingleton<PlayerController>
         // Input Just stopped (Left Mouse Button Released)
         if (context.canceled)
         {
-            if (isDragging != DragState.Left)
+            if (isDragging != DragState.Left || RootsController.Instance.currentRootState == RootsController.RootState.Hardened || !RootsController.Instance.canRoot)
             {
                 return;
             }
@@ -111,7 +105,7 @@ public class PlayerController : UnitySingleton<PlayerController>
         // Input Just Held (Left Mouse Button Held)
         if (context.started)
         {
-            if (isDragging == DragState.Left)
+            if (isDragging == DragState.Left || RootsController.Instance.currentRootState == RootsController.RootState.Hardened || !RootsController.Instance.canRoot)
             {
                 return;
             }
@@ -124,7 +118,7 @@ public class PlayerController : UnitySingleton<PlayerController>
         // Input Just stopped (Left Mouse Button Released)
         if (context.canceled)
         {
-            if (isDragging != DragState.Right)
+            if (isDragging != DragState.Right || RootsController.Instance.currentRootState == RootsController.RootState.Hardened || !RootsController.Instance.canRoot)
             {
                 return;
             }
@@ -175,20 +169,24 @@ public class PlayerController : UnitySingleton<PlayerController>
             return;
         }
 
-        CurrentThrowCount++;
+        RaycastHit hit;
+        CurrentThrowCount += Physics.Raycast(Player.transform.position, Vector3.down, out hit, 2f, groundLayer) ? 0 : 1;
 
         // Get Player Rigidbody
         Rigidbody RB = Player.GetComponent<Rigidbody>();
 
         Vector3 direction = (Vector3)((mouseFinishedClick - mouseStartedClick).normalized);
 
+        float magnitude = mouseDelta.magnitude * strengthMultiplier;
+
         // If player not on wall, move forward instead of up
         if (ClimbingWall == false)
         {
-            direction += (Camera.main.transform.forward.normalized * camForwardScalar * (forward ? 1 : -1));
+            RB.AddForceAtPosition((Camera.main.transform.forward.normalized * camForwardScalar * (forward ? 1 : -1)) * magnitude, Player.transform.position, ForceMode.Impulse);
+            
         }
 
-        float magnitude = mouseDelta.magnitude * strengthMultiplier;
+        
 
         // Cap magnitude of Movement at Max Strength
         magnitude = Mathf.Clamp(magnitude, 0, maxStrength);
@@ -211,5 +209,26 @@ public class PlayerController : UnitySingleton<PlayerController>
         RB.velocity = Vector3.ClampMagnitude(RB.velocity, maxSpeed);
         Debug.Log("str: " + magnitude + " direction: " + direction);
         Debug.DrawLine(Player.transform.position, Player.transform.position + direction, Color.red, 10f, false);
+
+        if(RootsController.Instance.currentRootState == RootsController.RootState.TooLoose)
+        {
+            RootsController.Instance.OnWeakRootThrow();
+        }
+    }
+
+    public void SetCurrentThrowCount(int count)
+    {
+        CurrentThrowCount = count;
+    }
+
+    public void Unharden(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if(RootsController.Instance.currentRootState == RootsController.RootState.Hardened)
+            {
+                RootsController.Instance.OnUnharden();
+            }
+        }
     }
 }

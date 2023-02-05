@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using TMPro;
 
 [System.Serializable]
 public class RootSpring
@@ -30,8 +31,7 @@ public class RootGrowthTagProfile
 
 public class RootsController : UnitySingleton<RootsController>
 {
-    
-
+    public TextMeshProUGUI currentRootStateText;
     public ProceduralIvy rootGen;
     public float baseRootStrength = 1f;
     public float rootStrength;
@@ -51,11 +51,22 @@ public class RootsController : UnitySingleton<RootsController>
 
     public float currentGrowthRate;
     public float currentGrowthState;
+    public RootGrowthTagProfile currentRootProfile;
     public bool isRooted;
+    public bool canRoot = true;
+
+    public enum RootState { TooLoose, JustRight, Hardened };
+    public RootState currentRootState;
+
+    private void Start()
+    {
+        currentRootProfile = growthProfiles[0];
+        currentRootState = RootState.JustRight;
+    }
 
     public void Update()
     {
-
+        currentRootStateText.text = "Current Root State: " + currentRootState.ToString();
         UpdateAllRootSprings();
         UpdateGrowthState();
     }
@@ -68,6 +79,9 @@ public class RootsController : UnitySingleton<RootsController>
         }
 
         currentGrowthState += 1f * Time.deltaTime;
+
+        currentRootState = (currentRootProfile.minGrowthDuration > currentGrowthState) ? RootState.TooLoose :
+            (currentRootProfile.maxGrowthDuration > currentGrowthState) ? RootState.JustRight : RootState.Hardened;
     }
 
     public IEnumerator RootingRoutine()
@@ -78,7 +92,7 @@ public class RootsController : UnitySingleton<RootsController>
 
     public void ClearAllSprings()
     {
-        ProceduralIvy.Instance.combineAndClear();
+        ProceduralIvy.Instance.placeWIPRoots();
 
         int numRoots = rootSprings.Count;
 
@@ -107,10 +121,53 @@ public class RootsController : UnitySingleton<RootsController>
         }
     }
 
+    public void OnWeakRootThrow()
+    {
+        if(!canRoot)
+        {
+            return;
+        }
+
+         rootingRoutine = StartCoroutine(WeakenRoutine());
+    }
+
+    public IEnumerator WeakenRoutine()
+    {
+        canRoot = false;
+        yield return new WaitForSeconds(4f);
+        canRoot = true;
+        PlayerController.Instance.SetCurrentThrowCount(0);
+        currentRootState = RootState.JustRight;
+    }
+
+    public void OnUnharden()
+    {
+        if (!isRooted)
+        {
+            return;
+        }
+
+        rootingRoutine = StartCoroutine(UnhardenRoutine());
+    }
+
+    public IEnumerator UnhardenRoutine()
+    {
+        canRoot = false;
+        ClearAllSprings();
+        yield return new WaitForSeconds(4f);
+        canRoot = true;
+        PlayerController.Instance.SetCurrentThrowCount(0);
+        currentRootState = RootState.JustRight;
+    }
 
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (!canRoot)
+        {
+            return;
+        }
+
         foreach(ContactPoint contactPoint in collision.contacts)
         {
             if (!currentContactPoints.Contains(contactPoint))
@@ -137,10 +194,13 @@ public class RootsController : UnitySingleton<RootsController>
             //rootGen.createIvy(collision.contacts[0]);
             newSpring.UpdateRootSpring(rootStrengthRate);
 
+            currentRootProfile = GetGrowthProfileFromLayer(collision.gameObject.layer);
+
             foreach (ContactPoint point in currentContactPoints)
             {
-                rootGen.createIvy(point, GetGrowthProfileFromLayer(collision.gameObject.layer).visualGrowSpeed);
+                rootGen.createIvy(point, currentRootProfile.visualGrowSpeed);
             }
+            
             isRooted = true;
         }
 

@@ -62,6 +62,15 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Unharden"",
+                    ""type"": ""Button"",
+                    ""id"": ""baa30358-ec32-4fae-afb0-4091dc29c159"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -108,6 +117,17 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""action"": ""RightMouseClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4f96131f-5e98-4350-948a-ae5b761fa887"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Unharden"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -120,6 +140,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         m_Player_MousePos = m_Player.FindAction("MousePos", throwIfNotFound: true);
         m_Player_MouseClick = m_Player.FindAction("MouseClick", throwIfNotFound: true);
         m_Player_RightMouseClick = m_Player.FindAction("RightMouseClick", throwIfNotFound: true);
+        m_Player_Unharden = m_Player.FindAction("Unharden", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -183,6 +204,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MousePos;
     private readonly InputAction m_Player_MouseClick;
     private readonly InputAction m_Player_RightMouseClick;
+    private readonly InputAction m_Player_Unharden;
     public struct PlayerActions
     {
         private @InputActions m_Wrapper;
@@ -191,6 +213,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         public InputAction @MousePos => m_Wrapper.m_Player_MousePos;
         public InputAction @MouseClick => m_Wrapper.m_Player_MouseClick;
         public InputAction @RightMouseClick => m_Wrapper.m_Player_RightMouseClick;
+        public InputAction @Unharden => m_Wrapper.m_Player_Unharden;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -212,6 +235,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @RightMouseClick.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRightMouseClick;
                 @RightMouseClick.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRightMouseClick;
                 @RightMouseClick.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRightMouseClick;
+                @Unharden.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUnharden;
+                @Unharden.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUnharden;
+                @Unharden.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUnharden;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -228,6 +254,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @RightMouseClick.started += instance.OnRightMouseClick;
                 @RightMouseClick.performed += instance.OnRightMouseClick;
                 @RightMouseClick.canceled += instance.OnRightMouseClick;
+                @Unharden.started += instance.OnUnharden;
+                @Unharden.performed += instance.OnUnharden;
+                @Unharden.canceled += instance.OnUnharden;
             }
         }
     }
@@ -238,5 +267,6 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         void OnMousePos(InputAction.CallbackContext context);
         void OnMouseClick(InputAction.CallbackContext context);
         void OnRightMouseClick(InputAction.CallbackContext context);
+        void OnUnharden(InputAction.CallbackContext context);
     }
 }
