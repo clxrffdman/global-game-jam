@@ -9,11 +9,13 @@ public class PlayerController : UnitySingleton<PlayerController>
     public enum DragState { Null, Left, Right };
     [Header("Tuning Variables")]
 
+    public LayerMask groundLayer;
     public float maxSpeed = 20;
     public float maxStrength = 5;
     public float strengthMultiplier = 1;
     public float torqueStrength = 1;
     public float camForwardScalar = 0;
+    public int ThrowCount = 2;
 
     [Header("Root System")]
     public float SecondsTillAttached = 1f;
@@ -31,8 +33,11 @@ public class PlayerController : UnitySingleton<PlayerController>
 
     private Vector2 mouseDelta; // For swipe magnitute
 
+    private bool ClimbingWall = false;
+    public int CurrentThrowCount = 0;
+
     [Header("Current State")]
-    
+
     public DragState isDragging;
 
     private void Start()
@@ -42,17 +47,8 @@ public class PlayerController : UnitySingleton<PlayerController>
 
     private void Update()
     {
-
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-
-        }
     }
-
-
-
 
     // Process Player Input Click
     public void OnMainInput(InputAction.CallbackContext context)
@@ -60,13 +56,13 @@ public class PlayerController : UnitySingleton<PlayerController>
         // Input Just Held (Left Mouse Button Held)
         if (context.started)
         {
-            if(isDragging == DragState.Right)
+            if (isDragging == DragState.Right || RootsController.Instance.currentRootState == RootsController.RootState.Hardened || !RootsController.Instance.canRoot)
             {
                 return;
             }
             // Get Mouse Started Click Position
             mouseStartedClick = currentMousePos;
-            
+
             isDragging = DragState.Left;
         }
 
@@ -74,13 +70,29 @@ public class PlayerController : UnitySingleton<PlayerController>
         // Input Just stopped (Left Mouse Button Released)
         if (context.canceled)
         {
-            if(isDragging != DragState.Left)
+            if (isDragging != DragState.Left || RootsController.Instance.currentRootState == RootsController.RootState.Hardened || !RootsController.Instance.canRoot)
             {
                 return;
             }
             // Get Mouse Released Position
             mouseFinishedClick = currentMousePos;
             mouseDelta = currentMouseDelta;
+
+            // Remember if player was locked in or not
+            // Done here, before we clear springs, so we can use this info in ThrowPlayer later
+            ClimbingWall = false;
+            RaycastHit hit;
+            bool TouchingFloor = Physics.Raycast(Player.transform.position, Vector3.down, out hit, 2f, groundLayer);
+
+            if (RootsController.Instance.rootSprings.Count > 0 && !TouchingFloor)
+            {
+                ClimbingWall = true;
+            }
+            // Check if throw count should reset
+            if (RootsController.Instance.rootSprings.Count > 0)
+            {
+                CurrentThrowCount = 0;
+            }
             RootsController.Instance.ClearAllSprings();
             // Throw Player
             ThrowPlayer(true);
@@ -93,26 +105,42 @@ public class PlayerController : UnitySingleton<PlayerController>
         // Input Just Held (Left Mouse Button Held)
         if (context.started)
         {
-            if (isDragging == DragState.Left)
+            if (isDragging == DragState.Left || RootsController.Instance.currentRootState == RootsController.RootState.Hardened || !RootsController.Instance.canRoot)
             {
                 return;
             }
             // Get Mouse Started Click Position
             mouseStartedClick = currentMousePos;
-            
+
             isDragging = DragState.Right;
         }
 
         // Input Just stopped (Left Mouse Button Released)
         if (context.canceled)
         {
-            if (isDragging != DragState.Right)
+            if (isDragging != DragState.Right || RootsController.Instance.currentRootState == RootsController.RootState.Hardened || !RootsController.Instance.canRoot)
             {
                 return;
             }
             // Get Mouse Released Position
             mouseFinishedClick = currentMousePos;
             mouseDelta = currentMouseDelta;
+
+            // Remember if player was locked in or not
+            // Done here, before we clear springs, so we can use this info in ThrowPlayer later
+            ClimbingWall = false;
+            RaycastHit hit;
+            bool TouchingFloor = Physics.Raycast(Player.transform.position, Vector3.down, out hit, 2f, groundLayer);
+
+            if (RootsController.Instance.rootSprings.Count > 0 && !TouchingFloor)
+            {
+                ClimbingWall = true;
+            }
+            // Check if throw count should reset
+            if (RootsController.Instance.rootSprings.Count > 0)
+            {
+                CurrentThrowCount = 0;
+            }
             RootsController.Instance.ClearAllSprings();
             // Throw Player
             ThrowPlayer(false);
@@ -129,28 +157,48 @@ public class PlayerController : UnitySingleton<PlayerController>
     // Update Mouse Move Delta
     public void UpdateMoveDelta(InputAction.CallbackContext context)
     {
-        currentMouseDelta = context.ReadValue<Vector2>();  
+        currentMouseDelta = context.ReadValue<Vector2>();
     }
 
     // Throw player
     private void ThrowPlayer(bool forward)
-    {
-        if(RootsController.Instance.rootSprings.Count != 1)
+    { 
+
+        if (CurrentThrowCount > ThrowCount)
         {
-            //return;
+            return;
         }
+
+        RaycastHit hit;
+        CurrentThrowCount += Physics.Raycast(Player.transform.position, Vector3.down, out hit, 2f, groundLayer) ? 0 : 1;
+
         // Get Player Rigidbody
         Rigidbody RB = Player.GetComponent<Rigidbody>();
 
         Vector3 direction = (Vector3)((mouseFinishedClick - mouseStartedClick).normalized);
-        direction += (RootsController.Instance.rootSprings.Count == 1) ? Vector3.zero : (Camera.main.transform.forward.normalized * camForwardScalar * (forward ? 1 : -1));
+
         float magnitude = mouseDelta.magnitude * strengthMultiplier;
+
+        // If player not on wall, move forward instead of up
+        if (ClimbingWall == false)
+        {
+            RB.AddForceAtPosition((Camera.main.transform.forward.normalized * camForwardScalar * (forward ? 1 : -1)) * magnitude, Player.transform.position, ForceMode.Impulse);
+            
+        }
+
+        
 
         // Cap magnitude of Movement at Max Strength
         magnitude = Mathf.Clamp(magnitude, 0, maxStrength);
 
-        // Move player in direction at magnitude
-        RB.AddForceAtPosition(direction*magnitude, Player.transform.position, ForceMode.Impulse);
+        // Secret boost for climbing wall
+        if (ClimbingWall == true)
+        {
+            magnitude += 5;
+        }
+
+            // Move player in direction at magnitude
+        RB.AddForceAtPosition(direction * magnitude, Player.transform.position, ForceMode.Impulse);
 
         // Rotate player
         Vector3 torque = direction * magnitude * torqueStrength;
@@ -160,5 +208,27 @@ public class PlayerController : UnitySingleton<PlayerController>
         // Clamp player speed
         RB.velocity = Vector3.ClampMagnitude(RB.velocity, maxSpeed);
         Debug.Log("str: " + magnitude + " direction: " + direction);
+        Debug.DrawLine(Player.transform.position, Player.transform.position + direction, Color.red, 10f, false);
+
+        if(RootsController.Instance.currentRootState == RootsController.RootState.TooLoose)
+        {
+            RootsController.Instance.OnWeakRootThrow();
+        }
+    }
+
+    public void SetCurrentThrowCount(int count)
+    {
+        CurrentThrowCount = count;
+    }
+
+    public void Unharden(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if(RootsController.Instance.currentRootState == RootsController.RootState.Hardened)
+            {
+                RootsController.Instance.OnUnharden();
+            }
+        }
     }
 }
