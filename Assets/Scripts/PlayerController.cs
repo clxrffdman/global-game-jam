@@ -104,7 +104,7 @@ public class PlayerController : UnitySingleton<PlayerController>
             // Done here, before we clear springs, so we can use this info in ThrowPlayer later
             ClimbingWall = false;
             RaycastHit hit;
-            bool TouchingFloor = Physics.Raycast(Player.transform.position, Vector3.down, out hit, 2f, groundLayer);
+            bool TouchingFloor = Physics.Raycast(Player.transform.position, Vector3.down, out hit, 3f, groundLayer);
 
             if (RootsController.Instance.rootSprings.Count > 0 && !TouchingFloor)
             {
@@ -152,7 +152,7 @@ public class PlayerController : UnitySingleton<PlayerController>
             // Done here, before we clear springs, so we can use this info in ThrowPlayer later
             ClimbingWall = false;
             RaycastHit hit;
-            bool TouchingFloor = Physics.Raycast(Player.transform.position, Vector3.down, out hit, 0.2f, groundLayer);
+            bool TouchingFloor = Physics.Raycast(Player.transform.position, Vector3.down, out hit, 3f, groundLayer);
 
             if (RootsController.Instance.rootSprings.Count > 0 && !TouchingFloor)
             {
@@ -192,7 +192,7 @@ public class PlayerController : UnitySingleton<PlayerController>
         }
 
         RaycastHit hit;
-        CurrentThrowCount += Physics.Raycast(Player.transform.position, Vector3.down, out hit, 0.2f, groundLayer) ? 0 : 1;
+        CurrentThrowCount += Physics.Raycast(Player.transform.position, Vector3.down, out hit, 3, groundLayer) ? 0 : 1;
 
         // Get Player Rigidbody
         Rigidbody RB = Player.GetComponent<Rigidbody>();
