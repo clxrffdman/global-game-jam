@@ -17,9 +17,9 @@
             ],
             "bindings": [
                 {
-                    "name": "One Modifier",
-                    "id": "61085eeb-a6de-4426-ad6d-9a6a8661e538",
-                    "path": "OneModifier",
+                    "name": "Two Modifiers",
+                    "id": "d2735cd9-b358-470b-81ee-b8275447e903",
+                    "path": "TwoModifiers",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -28,8 +28,8 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "modifier",
-                    "id": "1b7da56e-d4a1-43b4-8a76-c3938681a6b7",
+                    "name": "modifier1",
+                    "id": "ae039b98-4238-44b5-8fcf-756ebb9b3592",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
@@ -39,9 +39,20 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "binding",
-                    "id": "f1fefcdd-18c8-40a9-a2b7-fe9ec908e95a",
+                    "name": "modifier2",
+                    "id": "6f36ddf5-031e-4d44-b3be-2de145d777f6",
                     "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "mouseLook",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "63958b49-c8c4-4ab8-a588-895078757c8d",
+                    "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
