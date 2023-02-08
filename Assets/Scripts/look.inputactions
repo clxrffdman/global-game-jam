@@ -1,0 +1,56 @@
+{
+    "name": "look",
+    "maps": [
+        {
+            "name": "mouse",
+            "id": "12fd92de-e555-4d43-9425-bc1212123d6e",
+            "actions": [
+                {
+                    "name": "mouseLook",
+                    "type": "PassThrough",
+                    "id": "4608519d-6b18-42af-8cbf-83892a281518",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "One Modifier",
+                    "id": "61085eeb-a6de-4426-ad6d-9a6a8661e538",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "mouseLook",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "1b7da56e-d4a1-43b4-8a76-c3938681a6b7",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "mouseLook",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "f1fefcdd-18c8-40a9-a2b7-fe9ec908e95a",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "mouseLook",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
